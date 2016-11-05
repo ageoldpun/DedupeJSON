@@ -62,5 +62,4 @@ originalLeads.forEach(function(lead, index) {
   });
 });
 
-console.log(returnLeads);
-return returnLeads;
+fs.writeFileSync('./dedupe.json', JSON.stringify(returnLeads), 'utf-8');
