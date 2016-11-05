@@ -21,6 +21,26 @@ var maxDate = function(dateA, dateB) {
   }
 };
 
+var appendReturnLeads = function(greaterDate, matchingLead, lead) {
+  switch (greaterDate) {
+    case "a":
+      // delete b from the returnLeads array
+      returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
+      break;
+    case "b":
+      // delete a from the returnLeads array
+      returnLeads.splice(returnLeads.indexOf(lead), 1);
+      break;
+    default:
+      // find out which has higher index and delete the other from returnLeads array
+      if (originalLeads.indexOf(matchingLead) > originalLeads.indexOf(lead)) {
+        returnLeads.splice(returnLeads.indexOf(lead), 1);
+      } else {
+        returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
+      }
+  }
+}
+
 var originalLeads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
 var returnLeads = originalLeads
 
@@ -30,20 +50,7 @@ originalLeads.forEach(function(lead, index) {
     if (lead._id === matchingLead._id && index !== matchingIndex) {
       // if so, find out which one has later date and delete the other
       var greaterDate = maxDate(lead.entryDate, matchingLead.entryDate);
-      if (greaterDate === 'a') {
-        // delete b from the returnLeads array
-        returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
-      } else if (greaterDate === 'b') {
-        // delete a from the returnLeads array
-        returnLeads.splice(returnLeads.indexOf(lead), 1);
-      } else if (greaterDate === 'same') {
-        // find out which has higher index and delete the other from returnLeads array
-        if (originalLeads.indexOf(matchingLead) > originalLeads.indexOf(lead)) {
-          returnLeads.splice(returnLeads.indexOf(lead), 1);
-        } else {
-          returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
-        }
-      }
+      appendReturnLeads(greaterDate, matchingLead, lead);
     }
   });
 
@@ -52,20 +59,7 @@ originalLeads.forEach(function(lead, index) {
     if (lead.email === matchingLead.email && index !== matchingIndex) {
       // if so, find out which one has later date and delete the other
       var greaterDate = maxDate(lead.entryDate, matchingLead.entryDate);
-      if (greaterDate === 'a') {
-        // delete b from the returnLeads array
-        returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
-      } else if (greaterDate === 'b') {
-        // delete a from the returnLeads array
-        returnLeads.splice(returnLeads.indexOf(lead), 1);
-      } else if (greaterDate === 'same') {
-        // find out which has higher index and delete the other from returnLeads array
-        if (originalLeads.indexOf(matchingLead) > originalLeads.indexOf(lead)) {
-          returnLeads.splice(returnLeads.indexOf(lead), 1);
-        } else {
-          returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
-        }
-      }
+      appendReturnLeads(greaterDate, matchingLead, lead);
     }
   });
 });
