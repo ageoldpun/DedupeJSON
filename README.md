@@ -4,4 +4,4 @@
 
   * Run the application with `node DeDupeJSON.js {filename to be imported}`
   * The application will remove duplicate JSON entries based on the `_id` and `entryDate` fields.
-  * It outputs the deduped json to a file, `dedupe.json`;
+  * It outputs two files, `dedupe.json` and `removedEntries.log`;

@@ -11,6 +11,7 @@ var fs = require('fs');
 
 var originalLeads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
 var returnLeads = originalLeads;
+var removedEntries = [];
 
 var maxDate = function(dateA, dateB) {
   var parsedDateA = Date.parse(dateA);
@@ -28,17 +29,21 @@ var removeDuplicateLead = function(greaterDate, lead, matchingLead) {
   switch (greaterDate) {
     case "a":
       // delete b from the returnLeads array
+      removedEntries.push(returnLeads[returnLeads.indexOf(matchingLead)]);
       returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
       break;
     case "b":
       // delete a from the returnLeads array
+      removedEntries.push(returnLeads[returnLeads.indexOf(lead)]);
       returnLeads.splice(returnLeads.indexOf(lead), 1);
       break;
     default:
       // find out which has higher index and delete the other from returnLeads array
       if (originalLeads.indexOf(matchingLead) > originalLeads.indexOf(lead)) {
+        removedEntries.push(returnLeads[returnLeads.indexOf(lead)]);
         returnLeads.splice(returnLeads.indexOf(lead), 1);
       } else {
+        removedEntries.push(returnLeads[returnLeads.indexOf(matchingLead)]);
         returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
       }
   }
@@ -61,5 +66,8 @@ originalLeads.forEach(function(lead, index) {
     }
   });
 });
-
-fs.writeFileSync('./dedupe.json', JSON.stringify(returnLeads), 'utf-8');
+var log = 'Original file name: ' + process.argv[2] +
+  '\nOriginal data: ' + JSON.stringify({leads: originalLeads}) +
+  '\nRemoved Entries: ' + JSON.stringify({leads: removedEntries});
+fs.writeFileSync('./dedupe.json', JSON.stringify({leads: returnLeads}), 'utf-8');
+fs.writeFileSync('./removedEntries.log', log,'utf-8');
