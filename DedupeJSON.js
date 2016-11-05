@@ -8,6 +8,6 @@ var _ = require('./dependencies/lodash');
  * 3. If the dates are identical the data from the record provided last in the list should be preferred
  */
 
-var leads = JSON.parse(fs.readFileSync('leads.json', 'utf8')).leads;
+var leads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
 
-console.log(leadsWithOriginalIndex);
+console.log(leads);

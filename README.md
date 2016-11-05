@@ -2,5 +2,5 @@
 
 ### Getting Started
 
-  * Type in a command
-  * It does a thing
+  * Run the application with `node DeDupeJSON.js {filename to be imported}`
+  * It outputs your deduped JSON!
