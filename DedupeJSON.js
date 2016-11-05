@@ -66,8 +66,10 @@ originalLeads.forEach(function(lead, index) {
     }
   });
 });
+
 var log = 'Original file name: ' + process.argv[2] +
   '\nOriginal data: ' + JSON.stringify({leads: originalLeads}) +
   '\nRemoved Entries: ' + JSON.stringify({leads: removedEntries});
+
 fs.writeFileSync('./dedupe.json', JSON.stringify({leads: returnLeads}), 'utf-8');
-fs.writeFileSync('./removedEntries.log', log,'utf-8');
+fs.writeFileSync('./removedEntries.log', log, 'utf-8');
