@@ -9,6 +9,9 @@ var fs = require('fs');
  * 3. If the dates are identical the data from the record provided last in the list should be preferred
  */
 
+var originalLeads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
+var returnLeads = originalLeads;
+
 var maxDate = function(dateA, dateB) {
   var parsedDateA = Date.parse(dateA);
   var parsedDateB = Date.parse(dateB);
@@ -39,10 +42,7 @@ var removeDuplicateLead = function(greaterDate, lead, matchingLead) {
         returnLeads.splice(returnLeads.indexOf(matchingLead), 1);
       }
   }
-}
-
-var originalLeads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
-var returnLeads = originalLeads;
+};
 
 originalLeads.forEach(function(lead, index) {
   // loop through the leads to see if any ids match
