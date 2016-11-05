@@ -21,7 +21,7 @@ var maxDate = function(dateA, dateB) {
   }
 };
 
-var appendReturnLeads = function(greaterDate, matchingLead, lead) {
+var removeDuplicateLead = function(greaterDate, lead, matchingLead) {
   switch (greaterDate) {
     case "a":
       // delete b from the returnLeads array
@@ -42,24 +42,22 @@ var appendReturnLeads = function(greaterDate, matchingLead, lead) {
 }
 
 var originalLeads = JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).leads;
-var returnLeads = originalLeads
+var returnLeads = originalLeads;
 
 originalLeads.forEach(function(lead, index) {
   // loop through the leads to see if any ids match
   originalLeads.forEach(function(matchingLead, matchingIndex) {
     if (lead._id === matchingLead._id && index !== matchingIndex) {
-      // if so, find out which one has later date and delete the other
       var greaterDate = maxDate(lead.entryDate, matchingLead.entryDate);
-      appendReturnLeads(greaterDate, matchingLead, lead);
+      removeDuplicateLead(greaterDate, lead, matchingLead);
     }
   });
 
   // loop through the leads to see if any emails match
   originalLeads.forEach(function(matchingLead, matchingIndex) {
     if (lead.email === matchingLead.email && index !== matchingIndex) {
-      // if so, find out which one has later date and delete the other
       var greaterDate = maxDate(lead.entryDate, matchingLead.entryDate);
-      appendReturnLeads(greaterDate, matchingLead, lead);
+      removeDuplicateLead(greaterDate, lead, matchingLead);
     }
   });
 });
